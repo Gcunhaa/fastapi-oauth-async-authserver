@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "fastapi-authserver"
+version = "0.1.0"
+description = "Authentification server made with FastApi"
+authors = ["Gcunhaa <gsalomaoc@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+fastapi = "^0.61.1"
+uvicorn = "^0.12.2"
+alembic = "^1.4.3"
+gino = {extras = ["starlette"], version = "^1.0.1"}
+psycopg2 = "^2.8.6"
+SQLAlchemy-Utils = "^0.36.8"
+passlib = "^1.7.4"
+pydantic = {extras = ["email"], version = "^1.7.1"}
+python-multipart = "^0.0.5"
+jwcrypto = "^0.8"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.1.1"
+requests = "^2.24.0"
+autopep8 = "^1.5.4"
+black = {version = "^20.8b1", allow-prereleases = true}
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
