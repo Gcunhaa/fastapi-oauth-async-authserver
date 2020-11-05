@@ -13,7 +13,8 @@ class Settings(BaseSettings):
     POSTGRES_PORT: int = 5432
 
     REFRESH_TOKEN_EXPIRATION_TIME: int = 7 # IN DAYS
-    ACCESS_TOKEN_EXPIRATION_TIME: int = 600 # IN SECONDS
+    ACCESS_TOKEN_EXPIRATION_TIME: int = 5 # IN MINUTES
+    EMAIL_CONFIRMATION_TOKEN_EXPIRATION_TIME : int = 30 # In minutes
 
     class Config:
         case_sensitive = True

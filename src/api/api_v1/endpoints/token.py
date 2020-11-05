@@ -35,7 +35,10 @@ async def get_token(request: Request, form_data : AuthLoginForm = Depends(verify
 
         user = await get_owner_refresh_token(form_data.refresh_token)
         response.refresh_token = form_data.refresh_token
-
+    
+    if not user.is_active:
+        raise HTTPException(status_code=400, detail={'error':'invalid_grant', 'error_description': 'User is not active.'})
+        
     login_log.user_id = user.id
     await login_log.create()
 

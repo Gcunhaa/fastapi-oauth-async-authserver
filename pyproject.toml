@@ -15,7 +15,8 @@ SQLAlchemy-Utils = "^0.36.8"
 passlib = "^1.7.4"
 pydantic = {extras = ["email"], version = "^1.7.1"}
 python-multipart = "^0.0.5"
-jwcrypto = "^0.8"
+PyJWT = "^1.7.1"
+cryptography = "^3.2.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.1.1"

@@ -10,4 +10,4 @@ db.init_app(app)
 
 from api.api_v1.api import router
 
-app.include_router(router, prefix=settings.API_VERSION_STR, tags=['Users'])
+app.include_router(router, prefix=settings.API_VERSION_STR)

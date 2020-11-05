@@ -2,26 +2,29 @@ from typing import Any, List, Optional, Union
 
 from fastapi import APIRouter, HTTPException, Depends
 
-from schemas.user import UserOut, UserCreateIn, UserUpdateIn, UserInDb
+from core.security import create_email_confirmation_token
+from schemas.user import UserCreateIn, UserUpdateIn, UserInDb, UserInDBBase
 from schemas.error import HealthyError
 from schemas.success import Success
 from models.user import User as ORMUser
-from api.deps import get_current_user_id
+from models.pre_user import PreUser
+from api.deps import UserData
 
 router = APIRouter()
 
-@router.get('/', response_model=List[UserOut])
+@router.get('/', response_model=List[UserInDBBase])
 async def read_users(
     skip: int = 0,
     limit: int = 100,
-    current_user_id  = Depends(get_current_user_id) 
+    user_data : UserData = Depends(UserData) 
 ) -> Any:
     """
         Retrieve users.
     """
 
-    #todo: Verify if user has authorization
-    print(f'user_id : {current_user_id}')
+    if not user_data.is_superuser:
+        raise HTTPException(status_code=403)
+
     users = await ORMUser.query.limit(limit).offset(skip).gino.all()
     return users
 
@@ -43,36 +46,46 @@ async def create_user(
     else:
         request.is_active = True
         request.is_superuser = False
-        await ORMUser.create(**request.dict())
+
+
+
+        pre_user = await PreUser.create(**request.dict())
         success = Success()
         success.success = "AccountCreated"
         success.description = "Account created with success."
+        
+        #TODO: ENVIAR EMAIL COM O TOKEN DE CONFIRMAÇÃO
+        print(await create_email_confirmation_token(pre_user))
+
         return success
 
-@router.get('/{id}', response_model=UserOut)
+@router.get('/{id}', response_model=UserInDb)
 async def read_user(
-    id: int
+    id: int,
+    user_data : UserData = Depends()
 ) -> Any:
     """
     Retrieve user by id
     """
-    #TODO: Verify if user have authorization
-    
+    if user_data.id != id and not user_data.is_superuser:
+        raise HTTPException(status_code=403)
+
     user : ORMUser = await ORMUser.get_or_404(id)
     return UserInDb.from_orm(user)
 
-@router.put('/{id}', response_model=UserOut)
+@router.put('/{id}', response_model=UserInDb)
 async def update_user(
     id: int,
-    request: UserUpdateIn
+    request: UserUpdateIn,
+    user_data : UserData = Depends()
 ) -> Any:
     """
     Update user
     """
 
-    #TODO: Verify if user have authorization
+    if user_data.id != id and not user_data.is_superuser:
+        raise HTTPException(status_code=403)
 
     user : ORMUser= await ORMUser.get_or_404(id)
-    updated_fields : UserInDb = UserInDb.from_orm(request)
-    await user.update(**updated_fields.dict(skip_defaults=True)).apply()
+    await user.update(**request.dict(skip_defaults=True, exclude_unset=True)).apply()
     return UserInDb.from_orm(user)
