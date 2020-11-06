@@ -3,7 +3,7 @@ from sqlalchemy.engine.url import URL
 
 class Settings(BaseSettings):
     API_VERSION_STR : str = "/v1"
-    PROJECT_NAME : str = "Fastapi-gino-uvicorn"
+    PROJECT_NAME : str = "AuthServer"
     VERSION: str = "0.0.0"
 
     POSTGRES_SERVER: str = "lallah.db.elephantsql.com"
@@ -17,11 +17,11 @@ class Settings(BaseSettings):
     EMAIL_CONFIRMATION_TOKEN_EXPIRATION_TIME : int = 30 # In minutes
     PASSWORD_CHANGE_TOKEN_EXPIRATION_TIME : int = 30 # In minutes
 
-    SMTP_HOSTNAME: str = 'smtp.gmail.com'
-    SMTP_PORT: int = 587
-    SMTP_USERNAME: str = 'gsalomaoc@gmail.com'
-    SMTP_PASSWORD: str = 'rbwgrhadmuclxeyr'
-    SMTP_NO_REPLY_EMAIL: EmailStr = 'gsalomaoc@gmail.com'
+    SMTP_HOSTNAME: str
+    SMTP_PORT: int
+    SMTP_USERNAME: str
+    SMTP_PASSWORD: str
+    SMTP_NO_REPLY_EMAIL: EmailStr
 
     class Config:
         case_sensitive = True
