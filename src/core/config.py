@@ -1,4 +1,4 @@
-from pydantic import BaseSettings
+from pydantic import BaseSettings, EmailStr
 from sqlalchemy.engine.url import URL
 
 class Settings(BaseSettings):
@@ -15,6 +15,13 @@ class Settings(BaseSettings):
     REFRESH_TOKEN_EXPIRATION_TIME: int = 7 # IN DAYS
     ACCESS_TOKEN_EXPIRATION_TIME: int = 5 # IN MINUTES
     EMAIL_CONFIRMATION_TOKEN_EXPIRATION_TIME : int = 30 # In minutes
+    PASSWORD_CHANGE_TOKEN_EXPIRATION_TIME : int = 30 # In minutes
+
+    SMTP_HOSTNAME: str = 'smtp.gmail.com'
+    SMTP_PORT: int = 587
+    SMTP_USERNAME: str = 'gsalomaoc@gmail.com'
+    SMTP_PASSWORD: str = 'rbwgrhadmuclxeyr'
+    SMTP_NO_REPLY_EMAIL: EmailStr = 'gsalomaoc@gmail.com'
 
     class Config:
         case_sensitive = True

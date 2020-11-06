@@ -153,7 +153,7 @@ async def create_password_change_token(user : User) -> str:
 
     change_password_token : ChangePasswordToken = ChangePasswordToken(
         user_id= user.id,
-        valid_until= datetime.utcnow() + timedelta(minutes=settings.EMAIL_CONFIRMATION_TOKEN_EXPIRATION_TIME),
+        valid_until= datetime.utcnow() + timedelta(minutes=settings.PASSWORD_CHANGE_TOKEN_EXPIRATION_TIME),
         token=token
     )
 

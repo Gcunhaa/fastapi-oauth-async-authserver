@@ -7,6 +7,7 @@ from schemas.user import UserCreateIn, UserUpdateIn, UserInDb, UserInDBBase
 from schemas.error import HealthyError
 from schemas.success import Success
 from models.user import User as ORMUser
+from core.email import send_confirmation_email
 from models.pre_user import PreUser
 from api.deps import UserData
 
@@ -54,9 +55,10 @@ async def create_user(
         success.success = "AccountCreated"
         success.description = "Account created with success."
         
-        #TODO: ENVIAR EMAIL COM O TOKEN DE CONFIRMAÇÃO
-        print(await create_email_confirmation_token(pre_user))
+        token : str = await create_email_confirmation_token(pre_user)
 
+        await send_confirmation_email(pre_user.email,token)
+        
         return success
 
 @router.get('/{id}', response_model=UserInDb)
