@@ -8,9 +8,10 @@ from sqlalchemy_utils import EmailType, generic_repr
 
 db.JSONB, db.UUID, db.EmailType = (JSONB, UUID, EmailType)
 
+
 @generic_repr
 class Base(db.Model):
-    __abstract__= True
+    __abstract__ = True
 
     created = db.Column(
         db.DateTime, default=datetime.utcnow, server_default=db.func.now()
