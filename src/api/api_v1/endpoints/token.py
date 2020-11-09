@@ -56,6 +56,10 @@ async def get_token(
                         "success_description": "Need to confirm email before login",
                     }
 
+            if user.password == None:
+                #TODO: AUTENTIFICAR COM GOOGLE,FACEBOOK ou APPLE
+                return ''
+
             raise HTTPException(
                 status_code=400,
                 detail={
